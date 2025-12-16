@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "global-dashboard-db.fullname" . }}
+  labels:
+    {{- include "global-dashboard-db.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "global-dashboard-db.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "global-dashboard-db.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            - name: MICRONAUT_APPLICATION_NAME
+              value: {{ include "global-dashboard-db.fullname" . }}
+            - name: FLYWAY_ENABLED
+              value: {{ .Values.database.flyway.enabled | quote }}
+            - name: JDBC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "global-dashboard-db.fullname" . }}-secret
+                  key: jdbc-url
+            - name: JDBC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "global-dashboard-db.fullname" . }}-secret
+                  key: jdbc-user
+            - name: JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "global-dashboard-db.fullname" . }}-secret
+                  key: jdbc-password
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.probes.startup.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.probes.startup.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.startup.periodSeconds }}
+            failureThreshold: {{ .Values.probes.startup.failureThreshold }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

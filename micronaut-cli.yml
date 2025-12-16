@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.globaldashboard.db
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle_kotlin
+features: [annotation-api, app-name, data-jdbc, flyway, hikari, http-client, jackson-databind, java, java-application, jdbc, junit, logback, micronaut-build, netty-server, postgres, readme, serde-jackson, shade, yaml]

@@ -1,0 +1,50 @@
+# Default values for global-dashboard-db.
+replicaCount: 2
+
+image:
+  repository: global-dashboard-db
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8081
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+# Probes configuration
+probes:
+  liveness:
+    path: /health/liveness
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  readiness:
+    path: /health/readiness
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  startup:
+    path: /health/liveness
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    failureThreshold: 30
+
+database:
+  # Connection string for Neon (External Cloud DB)
+  url: "jdbc:postgresql://ep-snowy-sound-adxj03hp-pooler.c-2.us-east-1.aws.neon.tech:5432/neondb?sslmode=require"
+  username: "neondb_owner"
+  password: "npg_I53GDeQtWwgh"
+  flyway:
+    enabled: true
