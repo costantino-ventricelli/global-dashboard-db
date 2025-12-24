@@ -1,27 +1,33 @@
 package com.globaldashboard.db.entity;
 
-import io.micronaut.core.annotation.Nullable;
-import io.micronaut.data.annotation.DateCreated;
-import io.micronaut.data.annotation.DateUpdated;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
-
 import java.time.Instant;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Serdeable
+@Getter
+@Setter
+@NoArgsConstructor
 @MappedEntity("dashboards")
-public record Dashboard(
-        @Id @GeneratedValue(GeneratedValue.Type.AUTO) @Nullable Long id,
+public class Dashboard {
+        @Id
+        @GeneratedValue(GeneratedValue.Type.AUTO)
+        private Long id;
 
-        Long userId,
+        private Long userId;
+        private String name;
+        private String description;
+        private Instant createdAt = Instant.now();
+        private Instant updatedAt = Instant.now();
 
-        String name,
-
-        @Nullable String description,
-
-        @DateCreated Instant createdAt,
-
-        @DateUpdated Instant updatedAt) {
+        public Dashboard(Long userId, String name, String description) {
+                this.userId = userId;
+                this.name = name;
+                this.description = description;
+                this.createdAt = Instant.now();
+                this.updatedAt = Instant.now();
+        }
 }

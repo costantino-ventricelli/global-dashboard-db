@@ -1,10 +1,14 @@
 datasources:
   default:
-    url: jdbc:tc:postgresql:14:///globaldashboard
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:postgresql://localhost:5433/testdb
+    driverClassName: org.postgresql.Driver
+    username: testuser
+    password: testpassword
     dialect: POSTGRES
 
-flyway:
-  datasources:
-    default:
-      enabled: true
+micronaut:
+  test-resources:
+    enabled: false
+  health:
+    kafka:
+      enabled: false

@@ -23,16 +23,16 @@ class UserRepositoryTest {
     @Test
     void testUserCrudOperations() {
         // 1. Create
-        User user = new User(null, "jdoe", "john@example.com", "hashed_secret", null);
+        User user = new User("jdoe", "john@example.com", "hashed_secret");
         User savedUser = userRepository.save(user);
 
-        Assertions.assertNotNull(savedUser.id());
-        Assertions.assertEquals("jdoe", savedUser.username());
+        Assertions.assertNotNull(savedUser.getId());
+        Assertions.assertEquals("jdoe", savedUser.getUsername());
 
         // 2. Read
-        Optional<User> foundUser = userRepository.findById(savedUser.id());
+        Optional<User> foundUser = userRepository.findById(savedUser.getId());
         Assertions.assertTrue(foundUser.isPresent());
-        Assertions.assertEquals("john@example.com", foundUser.get().email());
+        Assertions.assertEquals("john@example.com", foundUser.get().getEmail());
 
         // 3. Find Custom
         Optional<User> byUsername = userRepository.findByUsername("jdoe");

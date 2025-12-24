@@ -28,7 +28,12 @@ Thumbs.db
 
 # Logs
 *.log
+*_log.*s
 
 # Helm
 charts/*.tgz
 kube-prometheus-stack/
+
+# Annotation Processing
+.apt_generated
+.apt_generated_tests

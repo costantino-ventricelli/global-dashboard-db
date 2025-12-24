@@ -5,3 +5,7 @@ plugin:
 type: application
 version: 0.1.0 # The version of the chart
 appVersion: "1.0.0" # The version of the application
+dependencies:
+  - name: postgresql
+    version: "*"
+    repository: https://charts.bitnami.com/bitnami

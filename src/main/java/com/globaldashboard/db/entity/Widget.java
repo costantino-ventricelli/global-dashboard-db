@@ -1,31 +1,32 @@
 package com.globaldashboard.db.entity;
 
-import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
-import io.micronaut.serde.annotation.Serdeable;
+import io.micronaut.data.annotation.TypeDef;
+import io.micronaut.data.model.DataType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Serdeable
+@Getter
+@Setter
+@NoArgsConstructor
 @MappedEntity("widgets")
-public record Widget(
-        @Id @GeneratedValue(GeneratedValue.Type.AUTO) @Nullable Long id,
+public class Widget {
+        @Id
+        @GeneratedValue(GeneratedValue.Type.AUTO)
+        private Long id;
 
-        Long dashboardId,
+        private Long dashboardId;
+        private String title;
+        private String type;
 
-        String title,
+        @TypeDef(type = DataType.JSON)
+        private String configJson;
 
-        String type,
-
-        @Nullable String dataSource,
-
-        @Nullable String configJson,
-
-        Integer positionX,
-
-        Integer positionY,
-
-        Integer width,
-
-        Integer height) {
+        private Integer positionX;
+        private Integer positionY;
+        private Integer width;
+        private Integer height;
 }
