@@ -35,7 +35,7 @@ public class UserService {
         if (userRepository.existsByEmail(request.email())) {
             log.warn("User email already exists: {}", request.email());
             userProducer.sendEvent(request.email(), new UserEvent(null, request.username(),
-                    request.email(), UserEvent.EventType.ERROR, "Email already exists"));
+                    request.email(), null, UserEvent.EventType.ERROR, "Email already exists"));
             return;
         }
 
@@ -44,7 +44,7 @@ public class UserService {
 
         log.info("User created successfully with ID: {}", savedUser.getId());
         UserEvent event = new UserEvent(savedUser.getId(), savedUser.getUsername(),
-                savedUser.getEmail(), UserEvent.EventType.CREATED, "User created successfully");
+                savedUser.getEmail(), null, UserEvent.EventType.CREATED, "User created successfully");
         userProducer.sendEvent(savedUser.getUsername(), event);
     }
 
@@ -55,12 +55,13 @@ public class UserService {
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
+            // We expose the password hash ONLY for internal services (like Auth) listening to this event.
             UserEvent event = new UserEvent(user.getId(), user.getUsername(), user.getEmail(),
-                    UserEvent.EventType.FOUND, "User found");
+                    user.getPasswordHash(), UserEvent.EventType.FOUND, "User found");
             userProducer.sendEvent(user.getUsername(), event);
         } else {
             log.warn("User not found: {}", request.username());
-            userProducer.sendEvent(request.username(), new UserEvent(null, request.username(), null,
+            userProducer.sendEvent(request.username(), new UserEvent(null, request.username(), null, null,
                     UserEvent.EventType.NOT_FOUND, "User not found"));
         }
     }
