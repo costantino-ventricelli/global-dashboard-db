@@ -2,8 +2,6 @@ datasources:
   default:
     driverClassName: org.postgresql.Driver
     dialect: POSTGRES
-    username: testuser
-    password: testpassword
 
 micronaut:
   test-resources:
