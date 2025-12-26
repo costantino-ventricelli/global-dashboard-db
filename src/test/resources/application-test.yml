@@ -1,7 +1,7 @@
-datasources:
-  default:
-    driverClassName: org.postgresql.Driver
-    dialect: POSTGRES
+# datasources:
+#   default:
+#     driverClassName: org.postgresql.Driver
+#     dialect: POSTGRES
 
 micronaut:
   test-resources:
