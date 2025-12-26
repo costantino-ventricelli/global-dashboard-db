@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "main", "master" ]
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,16 +17,14 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-      
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
+
     - name: Build and Test with Gradle
-      # Testcontainers works natively in GitHub Actions ubuntu-latest runners
-      run: ./gradlew clean check
+      uses: gradle/gradle-build-action@v3
+      with:
+        arguments: clean check
       
     - name: Publish Test Report
       if: always()
