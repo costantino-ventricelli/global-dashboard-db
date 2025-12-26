@@ -17,14 +17,12 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-
+    
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-
+    
     - name: Build and Test with Gradle
-      uses: gradle/gradle-build-action@v3
-      with:
-        arguments: clean check
+      run: ./gradlew clean check
       
     - name: Publish Test Report
       if: always()
