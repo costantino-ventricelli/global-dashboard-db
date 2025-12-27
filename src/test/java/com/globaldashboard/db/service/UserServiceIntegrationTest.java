@@ -60,7 +60,8 @@ class UserServiceIntegrationTest extends AbstractIntegrationTest {
 
         UserCreateRequest request = new UserCreateRequest("newuser", "duplicate@example.com", "secret");
 
-        userService.createUser(request);
+        // Act & Assert
+        Assertions.assertThrows(RuntimeException.class, () -> userService.createUser(request));
 
         // Verify NO new user created (username mismatch)
         Assertions.assertTrue(userRepository.findByUsername("newuser").isEmpty());

@@ -1,6 +1,11 @@
 micronaut:
   application:
     name: global-dashboard-db
+
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true
   
 datasources:
   default:

@@ -1,0 +1,18 @@
+type Query {
+    getDashboard(id: ID!): Dashboard
+    getUserDashboards(userId: ID!): [Dashboard]
+}
+
+type Dashboard {
+    id: ID!
+    userId: ID!
+    name: String!
+    widgets: [Widget]
+}
+
+type Widget {
+    id: ID!
+    dashboardId: ID!
+    country: String
+    # Start Date, End Date etc can come here later
+}

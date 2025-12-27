@@ -1,6 +1,5 @@
 package com.globaldashboard.db.service;
 
-
 import com.globaldashboard.db.entity.User;
 import com.globaldashboard.db.event.user.UserCreateRequest;
 import com.globaldashboard.db.event.user.UserEvent;
@@ -29,14 +28,14 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(UserCreateRequest request) {
+    public User createUser(UserCreateRequest request) {
         log.info("Processing creation request for user: {}", request.username());
 
         if (userRepository.existsByEmail(request.email())) {
             log.warn("User email already exists: {}", request.email());
             userProducer.sendEvent(request.email(), new UserEvent(null, request.username(),
                     request.email(), null, UserEvent.EventType.ERROR, "Email already exists"));
-            return;
+            throw new RuntimeException("Email already exists");
         }
 
         User newUser = userMapper.toEntity(request);
@@ -46,6 +45,8 @@ public class UserService {
         UserEvent event = new UserEvent(savedUser.getId(), savedUser.getUsername(),
                 savedUser.getEmail(), null, UserEvent.EventType.CREATED, "User created successfully");
         userProducer.sendEvent(savedUser.getUsername(), event);
+
+        return savedUser;
     }
 
     @Transactional
@@ -55,7 +56,8 @@ public class UserService {
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            // We expose the password hash ONLY for internal services (like Auth) listening to this event.
+            // We expose the password hash ONLY for internal services (like Auth) listening
+            // to this event.
             UserEvent event = new UserEvent(user.getId(), user.getUsername(), user.getEmail(),
                     user.getPasswordHash(), UserEvent.EventType.FOUND, "User found");
             userProducer.sendEvent(user.getUsername(), event);
