@@ -52,7 +52,7 @@ datasources:
 
 kafka:
   bootstrap:
-    servers: "kafka-headless.kafka.svc.cluster.local:9092"
+    servers: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
   consumers:
     enabled: true
 
