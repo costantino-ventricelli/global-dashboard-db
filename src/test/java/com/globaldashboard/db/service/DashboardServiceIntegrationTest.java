@@ -20,8 +20,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
+import com.globaldashboard.db.AbstractIntegrationTest;
+
 @MicronautTest
-class DashboardServiceIntegrationTest {
+class DashboardServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     DashboardService dashboardService;
@@ -51,8 +53,7 @@ class DashboardServiceIntegrationTest {
         dashboardRepository.deleteAll();
         userRepository.deleteAll();
 
-        testUserId =
-                userRepository.save(new User("dash_owner", "owner@example.com", "hash")).getId();
+        testUserId = userRepository.save(new User("dash_owner", "owner@example.com", "hash")).getId();
     }
 
     @Test
@@ -70,8 +71,7 @@ class DashboardServiceIntegrationTest {
     @Test
     void testAddWidget_Success() {
         // Create Dashboard first
-        Dashboard dashboard =
-                dashboardRepository.save(new Dashboard(testUserId, "My Dash", "Desc"));
+        Dashboard dashboard = dashboardRepository.save(new Dashboard(testUserId, "My Dash", "Desc"));
         Long dashId = dashboard.getId();
 
         WidgetAddRequest request = new WidgetAddRequest(dashId, "Weather Widget",

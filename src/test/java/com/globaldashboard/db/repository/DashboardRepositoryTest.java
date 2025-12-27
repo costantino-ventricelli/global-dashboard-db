@@ -10,8 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
+import com.globaldashboard.db.AbstractIntegrationTest;
+
 @MicronautTest
-class DashboardRepositoryTest {
+class DashboardRepositoryTest extends AbstractIntegrationTest {
 
     @Inject
     DashboardRepository dashboardRepository;

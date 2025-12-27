@@ -54,6 +54,13 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
     testImplementation("io.micronaut.testresources:micronaut-test-resources-client")
+
+    // Testcontainers
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.19.7"))
+    testImplementation("org.testcontainers:testcontainers")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:kafka")
 }
 
 application {

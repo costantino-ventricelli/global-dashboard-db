@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import com.globaldashboard.db.AbstractIntegrationTest;
 
 @MicronautTest // Starts the full Micronaut Context
-class UserRepositoryTest {
+class UserRepositoryTest extends AbstractIntegrationTest {
 
     @Inject
     UserRepository userRepository;

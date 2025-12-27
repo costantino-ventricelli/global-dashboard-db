@@ -11,8 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
+import com.globaldashboard.db.AbstractIntegrationTest;
+
 @MicronautTest
-class WidgetRepositoryTest {
+class WidgetRepositoryTest extends AbstractIntegrationTest {
 
     @Inject
     WidgetRepository widgetRepository;
@@ -62,7 +64,8 @@ class WidgetRepositoryTest {
         // 2. Read
         Optional<Widget> found = widgetRepository.findById(saved.getId());
         Assertions.assertTrue(found.isPresent());
-        // Note: dataSource property was used in old test but Widget entity doesn't seem to have it?
+        // Note: dataSource property was used in old test but Widget entity doesn't seem
+        // to have it?
         // Checking Widget entity... title, type, configJson, pos...
         // Assuming configJson or type is what was meant.
         // Logic: previously expected "prometheus" for dataSource.

@@ -17,8 +17,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
+import com.globaldashboard.db.AbstractIntegrationTest;
+
 @MicronautTest
-class UserServiceIntegrationTest {
+class UserServiceIntegrationTest extends AbstractIntegrationTest {
 
     @Inject
     UserService userService;
@@ -32,7 +34,7 @@ class UserServiceIntegrationTest {
     @MockBean(UserProducer.class)
     UserProducer userProducer() {
         return Mockito.mock(UserProducer.class);
-    }     
+    }
 
     @BeforeEach
     void cleanup() {
@@ -56,8 +58,7 @@ class UserServiceIntegrationTest {
         // Setup existing
         userRepository.save(new User("existing", "duplicate@example.com", "hash"));
 
-        UserCreateRequest request =
-                new UserCreateRequest("newuser", "duplicate@example.com", "secret");
+        UserCreateRequest request = new UserCreateRequest("newuser", "duplicate@example.com", "secret");
 
         userService.createUser(request);
 
@@ -86,4 +87,3 @@ class UserServiceIntegrationTest {
         verify(userProducer).sendEvent(eq("unknown"), any());
     }
 }
-
